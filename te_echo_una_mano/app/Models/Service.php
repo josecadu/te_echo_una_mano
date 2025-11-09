@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Service extends Model
 {
     protected $fillable=[
+        'familia_Profesional',
         'titulo',
         'descripcion'
     ];

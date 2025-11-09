@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('direccion')->nullable();
             $table->enum('role' , ['guest','usuario','profesional','admin'])->default('usuario');
-            $table->string('telephone');
-            $table->boolean('is_admin')->default(false);
+            //$table->string('telephone');
+            $table->decimal('lat' ,10,7)->nullable();
+            $table->decimal('lng' ,10,7)->nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

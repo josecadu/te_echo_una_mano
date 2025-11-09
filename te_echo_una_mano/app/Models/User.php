@@ -31,8 +31,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin',
         'direccion',
+        'lat',
+        'lng',
 
     ];
 
@@ -69,16 +70,89 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function profesional():HasOne{
+    public function profesional(): HasOne
+    {
         return $this->hasOne(Profesional::class);
     }
-    public function mensajesRecibidos():HasMany{
-        return $this->hasMany(Mensaje::class , 'receptor_id');
+    public function mensajesRecibidos(): HasMany
+    {
+        return $this->hasMany(Mensaje::class, 'receptor_id');
     }
-    public function mensajesEnviados():HasMany{
-        return $this->hasMany(Mensaje::class , 'emisor_id');
+    public function mensajesEnviados(): HasMany
+    {
+        return $this->hasMany(Mensaje::class, 'emisor_id');
     }
-    public function valoraciones():HasMany{
+    public function valoraciones(): HasMany
+    {
         return $this->hasMany(Valoracion::class);
     }
+
+
+    //helpers para roles
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isProfesional(): bool
+    {
+        return $this->role === 'profesional';
+    }
+
+    public function isUsuario(): bool
+    {
+        return $this->role === 'usuario';
+    }
+
+    public function isGuestRole(): bool
+    {
+        return $this->role === 'guest';
+    }
+    public function esProfesionalReal(): bool
+    {
+        return $this->role === 'profesional' && $this->profesional()->exists();
+    }
+
+    //promociones y degradaciones de roles
+
+    
+    public function promocionarAProfesional(): bool
+    {
+        if ($this->role !== 'usuario') {
+            return false; // Solo un usuario normal puede ser promovido
+        }
+
+        $this->role = 'profesional';
+        $this->save();
+
+        // Si no tiene registro profesional, se podría crear automáticamente:
+        if (!$this->profesional()->exists()) {
+            $this->profesional()->create([
+                'user_id' => $this->id,
+                'oficio' => 'Sin definir', // valor por defecto
+                'foto_perfil' => null,
+            ]);
+        }
+
+        return true;
+    }
+
+    /**
+     * Degrada a usuario si actualmente es profesional.
+     */
+    public function degradarAUsuario(): bool
+    {
+        if ($this->role !== 'profesional') {
+            return false; // Solo los profesionales pueden ser degradados
+        }
+
+        $this->role = 'usuario';
+        $this->save();
+
+        // Mantiene el registro profesional, o podrías eliminarlo si prefieres:
+        // $this->profesional()->delete();
+
+        return true;
+    }
+    //fin helpers para roles
 }
