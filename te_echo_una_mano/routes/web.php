@@ -1,18 +1,17 @@
 <?php
 
-
-
+use App\Livewire\MostrarUsers;
 use App\Livewire\RegistrarUser;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test-geocode', function () {
-    $results = app('geocoder')->geocode('Madrid, España')->get();
+// Route::get('/test-geocode', function () {
+//     $results = app('geocoder')->geocode('Madrid, España')->get();
 
-    dd(
-        $results->toArray(),
-        app('geocoder')->getProviders()->keys()->all()
-    );
-});
+//     dd(
+//         $results->toArray(),
+//         app('geocoder')->getProviders()->keys()->all()
+//     );
+// });
 
 
 Route::get('/', function () {
@@ -28,6 +27,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard');  
     
-});
+Route::get('/users',MostrarUsers::class)->name('users');
+
+}
+);

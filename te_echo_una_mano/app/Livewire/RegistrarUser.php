@@ -29,9 +29,9 @@ class RegistrarUser extends Component
            // dd($this->direccion);
 
         //codificar la direccion a coordenadas con el geocoder
-        $resultado = app('geocoder')->geocode($this->direccion)->get();
-        //$result = Geocoder::geocode($this->direccion)->get();
-        dd($resultado->toArray());
+        //$resultado = app('geocoder')->geocode($this->direccion)->get();
+        $result = Geocoder::geocode($this->direccion)->get();
+        //dd($result->toArray());
         $lat = null;
         $lng = null;
         if($result->isNotEmpty()){
@@ -39,7 +39,7 @@ class RegistrarUser extends Component
             $lat = $ubicacion->getCoordinates()->getLatitude();
             $lng = $ubicacion->getCoordinates()->getLongitude();
         }
-        dd($lat , $lng);
+        //dd($lat , $lng);
         $user = User::create( [
             'name'=> $this->name,
             'email'=> $this->email,
