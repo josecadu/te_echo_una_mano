@@ -19,17 +19,14 @@ class RegistrarUser extends Component
 
     protected $rules = [
         'name' => 'required|string|max:100',
-        'email' => 'required|email|unique:users,email',
+        'email' => 'required|email|max:255|unique:users,email',
         'password' => 'required|confirmed|min:6|max:20',
         'direccion' => 'required|string|max:255',
     ];
-
     public function save(){
         $this->validate();
-           // dd($this->direccion);
-
         //codificar la direccion a coordenadas con el geocoder
-        //$resultado = app('geocoder')->geocode($this->direccion)->get();
+        
         $result = Geocoder::geocode($this->direccion)->get();
         //dd($result->toArray());
         $lat = null;

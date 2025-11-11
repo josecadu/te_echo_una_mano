@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profesionals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('oficio');
+            $table->enum('oficio', ['Fontanero', 'Electricista', 'Albañil', 'Carpintero', 'Pintor', 'Jardinero', 'Limpieza', 'Cerrajero', 'Informatico'])->default('Fontanero');
             $table->timestamps();
             $table->string('foto_perfil');
         });

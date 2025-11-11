@@ -13,12 +13,18 @@ class HacerProfesional extends Component
     public $fotoPerfil;
     public $oficio;
 
-    public array $oficios=['Fontanero','Electricista','Albañil','Carpintero','Pintor','Jardinero','Limpiaeza','Cerrajero','Informatico'];
-
     protected $rules= [
-        'oficio'=>'required|in:oficios|',
+        'oficio'=>'required|in:Fontanero,Electricista,Albañil,Carpintero,Pintor,Jardinero,Limpieza,Cerrajero,Informatico',
         'fotoPerfil'=>'required|image|max:1024',
     ];
+    public function mount(User $user){
+        $this->user=$user;
+    }
+
+    public function save(){
+        $this->validate();
+        $ruta= $this->fotoPerfil ? $this->fotoPerfil->store('images','public') : 'images/perfil.png'; 
+    }
 
     public function render()
     {
