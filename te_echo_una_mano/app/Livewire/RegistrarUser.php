@@ -5,9 +5,10 @@ namespace App\Livewire;
 use App\Models\User;
 use Geocoder\Laravel\Facades\Geocoder as Geocoder;
 use Livewire\Component;
-
-
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+
+#[Layout('layouts.landing')]
 
 class RegistrarUser extends Component
 {
@@ -25,29 +26,18 @@ class RegistrarUser extends Component
     ];
     public function save(){
         $this->validate();
-        //codificar la direccion a coordenadas con el geocoder
+        //codificar la direccion a coordenadas con el metdo localizar
         
-        $result = Geocoder::geocode($this->direccion)->get();
-        //dd($result->toArray());
-        $lat = null;
-        $lng = null;
-        if($result->isNotEmpty()){
-            $ubicacion = $result->first();
-            $lat = $ubicacion->getCoordinates()->getLatitude();
-            $lng = $ubicacion->getCoordinates()->getLongitude();
-        }
-        //dd($lat , $lng);
+        $coord = User::localizar($this->direccion);
         $user = User::create( [
             'name'=> $this->name,
             'email'=> $this->email,
             'password'=>bcrypt($this->password),
             'direccion'=>$this->direccion,
-            'lat'=> $lat,
-            'lng'=> $lng,
+            'lat'=> $coord['lat']??null,
+            'lng'=> $coord['lng']??null,
 
         ]);
-
-        
         Auth::login($user);
         return redirect()->route('dashboard');
     }

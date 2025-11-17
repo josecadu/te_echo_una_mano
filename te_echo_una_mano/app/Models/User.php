@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Geocoder\Laravel\Facades\Geocoder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Profesional;
 
 class User extends Authenticatable
 {
@@ -116,7 +119,7 @@ class User extends Authenticatable
     //promociones y degradaciones de roles
 
     
-    public function promocionarAProfesional(): bool
+    public function promocionarAProfesional(array $data)
     {
         if ($this->role !== 'usuario') {
             return false; // Solo un usuario normal puede ser promovido
@@ -128,20 +131,16 @@ class User extends Authenticatable
         // Si no tiene registro profesional, se podría crear automáticamente:
         if (!$this->profesional()->exists()) {
             $this->profesional()->create([
-                'user_id' => $this->id,
-                'oficio' => 'Sin definir', // valor por defecto
-                'foto_perfil' => null,
+                'oficio' => $data['oficio'] ?? 'Fontanero', // valor por defecto
+                'foto_perfil' => $data['foto_perfil'] ?? 'storage/images/perfil.png',
             ]);
         }
-
-        return true;
     }
 
     /**
      * Degrada a usuario si actualmente es profesional.
      */
-    public function degradarAUsuario(): bool
-    {
+    public function degradarAUsuario(): bool  {
         if ($this->role !== 'profesional') {
             return false; // Solo los profesionales pueden ser degradados
         }
@@ -155,4 +154,20 @@ class User extends Authenticatable
         return true;
     }
     //fin helpers para roles
+
+
+    //Geolocalizacion
+
+    public static function localizar(string $direccion):array {
+        $result = Geocoder::geocode($direccion)->get();
+       
+        $lat = null;
+        $lng = null;
+        if($result->isNotEmpty()){
+            $ubicacion = $result->first();
+            $lat = $ubicacion->getCoordinates()->getLatitude();
+            $lng = $ubicacion->getCoordinates()->getLongitude();
+        }
+        return ['lat' => $lat, 'lng' => $lng];
+    }
 }
