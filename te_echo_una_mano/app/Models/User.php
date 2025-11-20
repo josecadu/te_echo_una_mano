@@ -132,7 +132,7 @@ class User extends Authenticatable
         if (!$this->profesional()->exists()) {
             $this->profesional()->create([
                 'oficio' => $data['oficio'] ?? 'Fontanero', // valor por defecto
-                'foto_perfil' => $data['foto_perfil'] ?? 'storage/images/perfil.png',
+                'foto_perfil' => $data['foto_perfil'] ?? 'images/perfil.png',
             ]);
         }
     }
@@ -170,4 +170,44 @@ class User extends Authenticatable
         }
         return ['lat' => $lat, 'lng' => $lng];
     }
+    public function distanciar(User|array|null $destino): ?float
+{
+    // coords del origen (este usuario)
+    if (!$this->lat || !$this->lng || $destino === null) {
+        return null;
+    }
+
+    if ($destino instanceof User) {
+        $lat2 = $destino->lat;
+        $lng2 = $destino->lng;
+    } elseif (is_array($destino)) {
+        $lat2 = $destino['lat'] ?? $destino[0] ?? null;
+        $lng2 = $destino['lng'] ?? $destino[1] ?? null;
+    } else {
+        return null;
+    }
+
+    if (!$lat2 || !$lng2) {
+        return null;
+    }
+
+    $R = 6371;
+
+    $lat1 = deg2rad($this->lat);
+    $lng1 = deg2rad($this->lng);
+    $lat2 = deg2rad($lat2);
+    $lng2 = deg2rad($lng2);
+
+    $dLat = $lat2 - $lat1;
+    $dLng = $lng2 - $lng1;
+
+    $a = sin($dLat / 2) ** 2 +
+         cos($lat1) * cos($lat2) * sin($dLng / 2) ** 2;
+
+    $c = 2 * asin(min(1, sqrt($a)));
+
+    return $R * $c;
+}
+
+
 }

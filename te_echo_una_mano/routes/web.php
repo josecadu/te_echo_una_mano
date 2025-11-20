@@ -2,6 +2,7 @@
 
 use App\Livewire\Indice;
 use App\Livewire\MostrarUsers;
+use App\Livewire\PanelProfesionales;
 use App\Livewire\RegistrarUser;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::middleware([
      
     
 Route::get('/admin',MostrarUsers::class)->name('admin');
+Route::get('/profesionales',PanelProfesionales::class)->name('profesionales');
 
 }
 );

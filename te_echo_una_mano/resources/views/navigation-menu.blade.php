@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 z-[999]">
     <!-- Primary Navigation Menu -->
     <div class="w-full px-4 sm:px-6 lg:px-8" style="background-color: #f1af22ff;">
         <div class="flex justify-between h-16">
@@ -22,7 +22,7 @@
                     </x-nav-link>
 
                     @if (Auth::user() && (Auth::user()->isProfesional() || Auth::user()->isAdmin()))
-                    <x-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
+                    <x-nav-link href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
                         {{ __('Profesionales') }}
                     </x-nav-link>
                     @endif
@@ -92,9 +92,10 @@
                     </x-dropdown>
                 </div>
                 @endif
-                @if (Auth::user() && !(Auth::user()->isProfesional()))
+                @if (Auth::user() && !Auth::user()->isProfesional() && !Auth::user()->isAdmin())
+
                 <div class=" flex justify-end">
-                    <x-button class="my-2" > SOY PROFESIONAL </x-button>
+                    <x-button class="my-2" @click="$dispatch('open-profesional-modal')"> SOY PROFESIONAL </x-button>
                 </div>
                 @endif
                 <!-- Settings Dropdown -->
