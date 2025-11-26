@@ -13,7 +13,7 @@
         {{-- Grid de usuarios --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             @forelse ($users as $user)
-            <div wire:key="user-{{ $user->id }}" class="rounded-2xl bg-green-200 border border-black p-4 bg-white hover:shadow-xl transition">
+            <div wire:key="user-{{ $user->id }}" class="rounded-2xl shadow-lg bg-green-200 border border-black p-4 bg-white hover:shadow-2xl transition">
                 <div class="flex items-start justify-between">
                     <div>
                         <h3 class="font-semibold text-gray-900">{{ $user->name }}</h3>
@@ -67,13 +67,11 @@
     <div>
         {{ $users->links() }}
     </div>
-
     {{-- Modal de edición --}}
     <x-dialog-modal wire:model="modal">
         <x-slot name="title">
             Editar usuario
         </x-slot>
-
         <x-slot name="content">
             <div class="space-y-4">
                 <div>
@@ -81,19 +79,16 @@
                     <x-input type="text" class="w-full" wire:model.defer="name" />
                     @error('name') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
-
                 <div>
                     <x-label value="Email" />
                     <x-input type="email" class="w-full" wire:model.defer="email" />
                     @error('email') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
-
                 <div>
                     <x-label value="Dirección" />
                     <x-input type="text" class="w-full" wire:model.defer="direccion" />
                     @error('direccion') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
-
                 <div>
                     <x-label value="Rol" />
                     <select class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
@@ -113,5 +108,4 @@
             <x-button class="ml-2" wire:click="update">Guardar</x-button>
         </x-slot>
     </x-dialog-modal>
-
 </div>

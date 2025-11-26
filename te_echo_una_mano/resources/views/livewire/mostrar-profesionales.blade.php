@@ -1,3 +1,4 @@
+
 <div class="bg-white rounded-xl shadow-md p-3 space-y-3">
     <h2 class="text-lg font-semibold px-5 text-gray-900 mb-4">
         Profesionales destacados @guest <x-input class="mx-4" type="text" wire:model.live="direccion" placeholder="introduce tu direccion" /> @endguest
@@ -8,7 +9,7 @@
     @endphp
 
     {{-- Encabezado tipo tabla --}}
-    <div class="flex items-center gap-5 font-semibold text-gray-700 px-3 text-xs border-b border-gray-300 pb-2">
+    <div class="flex items-center gap-5 font-semibold text-gray-700 px-5 text-xs border-b border-gray-300 pb-2">
         <span class="w-14">Foto</span>
         <span class="w-32">Nombre</span>
 
@@ -45,9 +46,10 @@
 
     <div class="flex items-center gap-5 border-b px-3 border-gray-100 py-3 last:border-none">
         {{-- FOTO --}}
-        <div class="w-14">
+        <div class="w-14
+         flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
 
-            <img src="{{Storage::url($profesional->foto_perfil)}}" class="w-16 md:w-32 max-w-full max-h-full" alt="Apple Watch">
+            <img src="{{Storage::url($profesional->foto_perfil)}}" class="w-14 md:w-14 max-w-full max-h-full" alt="Foto de {{ $prof->name ?? 'Sin usuario' }}">
 
         </div>
 
@@ -86,8 +88,8 @@
 
     @empty
     <p class="text-sm text-gray-500">No hay profesionales registrados.</p>
-       {{-- DEBUG TEMPORAL --}}
- <pre>{{ $profesional->foto_perfil }}</pre> 
+      
+    
     @endforelse
  
 
@@ -115,7 +117,8 @@
         <x-slot name="content">
             <livewire:registrar-user />
         </x-slot>
+        <x-slot name="footer">
 
-
+        </x-slot>
     </x-dialog-modal>
 </div>

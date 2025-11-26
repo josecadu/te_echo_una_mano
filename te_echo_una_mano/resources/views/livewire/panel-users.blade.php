@@ -1,14 +1,14 @@
-<div class="bg-gray-200 bg-opacity-25 grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 p-2 lg:p-4">
+<div class="bg-gray-200 bg-opacity-25 grid grid-cols-5 md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8 p-2 lg:p-4">
 
     <!-- Recuadro grande izquierda -->
-<div class="col-span-2 md:col-span-2"> 
-    <livewire:mostrar-profesionales />
-</div>
-    
+    <div class="col-span-3 md:col-span-3">
+        <livewire:mostrar-profesionales />
+    </div>
+
 
 
     <!-- Contenedor para los dos recuadros pequeños a la derecha -->
-    <div class="grid grid-cols-1 col-span-1 flex gap-2 h-full">
+    <div class="grid  col-span-2 flex gap-2 h-full">
         @guest
         <!-- parte pequeña inferior -->
         <div class="bg-white p-6 justify-content-center rounded-lg shadow-md h-full">
@@ -32,6 +32,14 @@
                 data-marcadores='@json($marcadores ?? [])'>
 
             </div>
+            <style>
+    #mapa-profesionales .leaflet-pane,
+    #mapa-profesionales .leaflet-top,
+    #mapa-profesionales .leaflet-bottom {
+        z-index: 10 !important;
+    }
+</style>
+
 
             <script>
                 function initMapaProfesionales() {
@@ -69,7 +77,6 @@
                         maxZoom: 19,
                         attribution: '&copy; OpenStreetMap'
                     }).addTo(map);
-
                     if (hasMarkers) {
                         marcadores.forEach(m => {
                             L.marker([m.lat, m.lng])
@@ -86,7 +93,7 @@
                 document.addEventListener('livewire:navigated', initMapaProfesionales);
             </script>
         </div>
-        
+
         <x-dialog-modal wire:model="profesionalModal">
             <x-slot name="title">
 
@@ -96,7 +103,9 @@
                 <livewire:hacer-profesional />
             </x-slot>
 
+            <x-slot name="footer">
 
+            </x-slot>
         </x-dialog-modal>
 
     </div>

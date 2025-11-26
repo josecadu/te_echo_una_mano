@@ -71,9 +71,10 @@ class MostrarProfesionales extends Component
             ->sortByDesc('id')
             ->values();
     }
-
+    ;
     // 3) Volvemos a meter la collection ordenada en el paginator
     $profesionales->setCollection($collection);
+    
 
     return view('livewire.mostrar-profesionales', compact('profesionales', 'ubicacion'));
 }

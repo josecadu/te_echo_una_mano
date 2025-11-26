@@ -21,8 +21,8 @@
             </label>
             <input type="file"
        wire:model="fotoPerfil"
-       accept="image/png, image/jpeg, image/jpg, image/webp"
-       class="w-full rounded-lg border bg-amber-100 border-gray-300 px-3 py-2 text-xs
+       accept="image/*"
+       class="w-full rounded-2xl border bg-amber-100 border-gray-300 px-3 py-2 text-xs
               focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
 
 

@@ -53,6 +53,9 @@
         <x-slot name="content">
             <livewire:registrar-user/>
         </x-slot>
+        <x-slot name="footer">
+
+        </x-slot>
 
     
     </x-dialog-modal>

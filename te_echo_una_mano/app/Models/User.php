@@ -14,6 +14,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Profesional;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -118,7 +119,7 @@ class User extends Authenticatable
 
     //promociones y degradaciones de roles
 
-    
+
     public function promocionarAProfesional(array $data)
     {
         if ($this->role !== 'usuario') {
@@ -140,7 +141,8 @@ class User extends Authenticatable
     /**
      * Degrada a usuario si actualmente es profesional.
      */
-    public function degradarAUsuario(): bool  {
+    public function degradarAUsuario(): bool
+    {
         if ($this->role !== 'profesional') {
             return false; // Solo los profesionales pueden ser degradados
         }
@@ -158,12 +160,13 @@ class User extends Authenticatable
 
     //Geolocalizacion
 
-    public static function localizar(string $direccion):array {
+    public static function localizar(string $direccion): array
+    {
         $result = Geocoder::geocode($direccion)->get();
-       
+
         $lat = null;
         $lng = null;
-        if($result->isNotEmpty()){
+        if ($result->isNotEmpty()) {
             $ubicacion = $result->first();
             $lat = $ubicacion->getCoordinates()->getLatitude();
             $lng = $ubicacion->getCoordinates()->getLongitude();
@@ -171,43 +174,66 @@ class User extends Authenticatable
         return ['lat' => $lat, 'lng' => $lng];
     }
     public function distanciar(User|array|null $destino): ?float
+    {
+        // coords del origen (este usuario)
+        if (!$this->lat || !$this->lng || $destino === null) {
+            return null;
+        }
+
+        if ($destino instanceof User) {
+            $lat2 = $destino->lat;
+            $lng2 = $destino->lng;
+        } elseif (is_array($destino)) {
+            $lat2 = $destino['lat'] ?? $destino[0] ?? null;
+            $lng2 = $destino['lng'] ?? $destino[1] ?? null;
+        } else {
+            return null;
+        }
+
+        if (!$lat2 || !$lng2) {
+            return null;
+        }
+
+        $R = 6371;
+
+        $lat1 = deg2rad($this->lat);
+        $lng1 = deg2rad($this->lng);
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        $dLat = $lat2 - $lat1;
+        $dLng = $lng2 - $lng1;
+
+        $a = sin($dLat / 2) ** 2 +
+            cos($lat1) * cos($lat2) * sin($dLng / 2) ** 2;
+
+        $c = 2 * asin(min(1, sqrt($a)));
+
+        return $R * $c;
+    }
+  protected function name(): Attribute
 {
-    // coords del origen (este usuario)
-    if (!$this->lat || !$this->lng || $destino === null) {
-        return null;
-    }
+    return Attribute::make(
+        set: function($value) {
+            $base = ucwords(strtolower($value));
 
-    if ($destino instanceof User) {
-        $lat2 = $destino->lat;
-        $lng2 = $destino->lng;
-    } elseif (is_array($destino)) {
-        $lat2 = $destino['lat'] ?? $destino[0] ?? null;
-        $lng2 = $destino['lng'] ?? $destino[1] ?? null;
-    } else {
-        return null;
-    }
+            if ($this->role === 'admin') {
+                return $base . '_ADMIN_';
+            }
 
-    if (!$lat2 || !$lng2) {
-        return null;
-    }
+            if ($this->role === 'profesional') {
+                return $base . '_PRO_';
+            }
 
-    $R = 6371;
-
-    $lat1 = deg2rad($this->lat);
-    $lng1 = deg2rad($this->lng);
-    $lat2 = deg2rad($lat2);
-    $lng2 = deg2rad($lng2);
-
-    $dLat = $lat2 - $lat1;
-    $dLng = $lng2 - $lng1;
-
-    $a = sin($dLat / 2) ** 2 +
-         cos($lat1) * cos($lat2) * sin($dLng / 2) ** 2;
-
-    $c = 2 * asin(min(1, sqrt($a)));
-
-    return $R * $c;
+            return $base;
+        }
+    );
 }
 
-
+    protected function direccion(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => ucwords(strtolower($value))
+        );
+    }
 }

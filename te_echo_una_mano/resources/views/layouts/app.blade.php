@@ -14,10 +14,10 @@
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      crossorigin=""/>
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin="" />
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         crossorigin=""></script>
 
 
@@ -35,9 +35,9 @@
         @livewire('navigation-menu')
 
         @if (isset($header))
-            <header class="bg-white shadow">
-                {{-- cabecera opcional --}}
-            </header>
+        <header class="bg-white shadow">
+            {{-- cabecera opcional --}}
+        </header>
         @endif
 
         <!-- Page Content -->
@@ -55,5 +55,6 @@
     {{-- Scripts que hace @push('scripts') desde las vistas --}}
     @stack('scripts')
 </body>
+
 
 </html>

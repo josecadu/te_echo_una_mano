@@ -15,7 +15,7 @@ class HacerProfesional extends Component
 
     protected $rules= [
         'oficio'=>'required|in:Fontanero,Electricista,Albañil,Carpintero,Pintor,Jardinero,Limpieza,Cerrajero,Informatico',
-        'fotoPerfil'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:1024',
+        'fotoPerfil'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ];
     public array $oficios = [
     'Fontanero',
@@ -33,14 +33,12 @@ class HacerProfesional extends Component
     public function save(){
         $this->validate();
 
-        $user = Auth::user();
+        $user = auth()->user();
         if(!$user){
             abort(403,'Usuario no autenticado');
         }
         $ruta=  $this->fotoPerfil?->store('images','public') ?? 'images/perfil.png'; 
         $data= ['oficio'=>$this->oficio,'foto_perfil'=>$ruta];
-        
-
         $user->promocionarAProfesional($data);
         session()->flash('message','Ahora eres un profesional!');
         $this->reset();

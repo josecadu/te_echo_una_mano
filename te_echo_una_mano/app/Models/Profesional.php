@@ -14,19 +14,38 @@ class Profesional extends Model
         'oficio',
         'foto_perfil'
     ];
-    public function user():BelongsTo{
+    public function getFamiliaProfesional(): ?string
+    {
+        $map = [
+            'Electricista'   => 'Electricidad',
+            'Fontanero'      => 'Fontanería',
+            'Albañil'        => 'Albañilería',
+            'Pintor'         => 'Pintura',
+            'Carpintero'     => 'Carpintería',
+            'Climatización'  => 'Climatización',
+            'Jardinero'      => 'Jardinería',
+            'Limpieza'       => 'Limpieza',
+            'Informático'    => 'Informática',
+            'Cerrajero'      => null,
+        ];
+        return $map[$this->oficio] ?? 'Otros Servicios';
+    }
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
-    public function valoraciones():HasMany{
+    public function valoraciones(): HasMany
+    {
         return $this->hasMany(Valoracion::class);
     }
-    public function services():BelongsToMany{
-        return $this->belongsToMany(Service::class,'profesional_service')
-        ->withPivot('precio_personalizado')
-        ->withTimestamps();
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class, 'profesional_service')
+            ->withPivot('precio_personalizado')
+            ->withTimestamps();
     }
-    public function getValoracionMediaAttribute():float{
+    public function getValoracionMediaAttribute(): float
+    {
         return $this->valoraciones()->avg('puntuacion');
     }
-    
 }

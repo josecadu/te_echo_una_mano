@@ -9,6 +9,9 @@
         <div class="mt-1 text-sm text-gray-600">
             {{ $content }}
         </div>
+        <div class="px-4 py-3 text-right">
+            {{ $footer }}
+        </div>
     </div>
 
     
