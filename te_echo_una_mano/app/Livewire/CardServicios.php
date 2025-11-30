@@ -5,13 +5,18 @@ namespace App\Livewire;
 use App\Models\Service;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CardServicios extends Component
 {
+    use WithPagination;
     public $service_id;
     public $precio;
+    public $precioPersonalizado =[];
     public bool $addServiceModal = false;
+
 
     public function openAddServiceModal()
     {
@@ -33,14 +38,53 @@ class CardServicios extends Component
         $this->addServiceModal = false;
         $this->reset(['service_id', 'precio']);
     }
-
-    public function render()
-    {
-        $profesional = Auth::user()->profesional;
-        $familia = $profesional->getFamiliaProfesional();
-        $serviciosAsignados = $profesional ? $profesional->services()->where('familia_Profesional', $familia)->get() : collect();
-        $serviciosDisponibles = $familia ? Service::where('familia_Profesional', $familia)->whereNotIn('id',$serviciosAsignados->pluck('id'))->get() : collect();
+    public function guardarPrecio($id){
+        $servicio = Auth::user()->profesional->services()->where('service_id', $id)->first();
+        $servicio->pivot->precio_personalizado= floatval(str_replace(',', '.', trim($this->precioPersonalizado[$id])));
+        $servicio->pivot->save();
         
-        return view('livewire.card-servicios', compact('familia', 'profesional', 'serviciosAsignados', 'serviciosDisponibles'));
     }
+    public function quitarServicio($id){
+        $profesional = Auth::user()->profesional;
+        $profesional->services()->detach($id);
+    }
+    
+    #[On('servicioCreado')]
+public function render()
+{
+    $profesional = Auth::user()->profesional ?? null;
+    $familia = $profesional?->getFamiliaProfesional();
+
+    if ($profesional && $familia) {
+
+        // Query base de servicios asignados de esa familia
+        $queryAsignados = $profesional->services()
+            ->where('familia_Profesional', $familia);
+
+        // 1) Los que mostramos (paginados)
+        $serviciosAsignados = (clone $queryAsignados)->paginate(3);
+
+        // 2) TODOS los IDs asignados (sin paginar)
+        $idsServiciosAsignados = $queryAsignados
+            ->pluck('services.id')
+            ->toArray();
+
+        // 3) Disponibles = todos los de la familia que NO están asignados
+        $serviciosDisponibles = Service::where('familia_Profesional', $familia)
+            ->whereNotIn('id', $idsServiciosAsignados)
+            ->get();
+
+    } else {
+        $serviciosAsignados = collect();
+        $serviciosDisponibles = collect();
+    }
+
+    return view('livewire.card-servicios', compact(
+        'familia',
+        'profesional',
+        'serviciosAsignados',
+        'serviciosDisponibles'
+    ));
+}
+
 }

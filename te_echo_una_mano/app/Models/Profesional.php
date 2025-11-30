@@ -14,9 +14,9 @@ class Profesional extends Model
         'oficio',
         'foto_perfil'
     ];
-    public function getFamiliaProfesional(): ?string
+          private static function mapaOficiosFamilias(): ?array
     {
-        $map = [
+        return  [
             'Electricista'   => 'Electricidad',
             'Fontanero'      => 'Fontanería',
             'Albañil'        => 'Albañilería',
@@ -26,9 +26,17 @@ class Profesional extends Model
             'Jardinero'      => 'Jardinería',
             'Limpieza'       => 'Limpieza',
             'Informático'    => 'Informática',
-            'Cerrajero'      => null,
+            'Cerrajero'      => 'Cerrajería',
         ];
-        return $map[$this->oficio] ?? 'Otros Servicios';
+    }
+    
+    public function getFamiliaProfesional(): string
+{
+    $map = self::mapaOficiosFamilias();
+    return $map [$this->oficio] ?? 'Otros Servicios';
+}
+    public static function familiasProfesionales(){
+        return array_values(array_unique(self::mapaOficiosFamilias()));
     }
     public function user(): BelongsTo
     {

@@ -3,6 +3,7 @@
 use App\Livewire\Indice;
 use App\Livewire\MostrarUsers;
 use App\Livewire\PanelProfesionales;
+use App\Livewire\PanelUsers;
 use App\Livewire\RegistrarUser;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,7 @@ Route::get('/register', RegistrarUser::class)->name('register');
 Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard'); 
+Route::get('/usuarios', PanelUsers::class)->name('usuarios');
 
 Route::middleware([
     'auth:sanctum',

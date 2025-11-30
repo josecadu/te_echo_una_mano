@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('puntuacion');
             $table->foreignId('profesional_id')->constrained('profesionals')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->unique(['profesional_id', 'user_id']);
             $table->timestamps();
         });
     }

@@ -6,12 +6,16 @@
                 Ajusta tu precio personalizado para cada servicio.
             </p>
         </div>
-
+        <button type="button" wire:click="$dispatch('openCrearServicio')"
+            class="inline-flex items-center gap-1 px-2 py-2 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 shadow">
+          Crear servicio
+        </button>
+        <livewire:CrearServicios/>
         <button
         @if(!$serviciosDisponibles->count()) disabled 
         @endif
             type="button" wire:click='openAddServiceModal'
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-black shadow"
+            class="inline-flex items-center gap-1 px-2 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-black shadow"
             title="Añadir servicio">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1z" />
@@ -103,7 +107,7 @@
 
             <div class="md:col-span-2">
                 <div class="relative">
-                    <input
+                    <input wire:model="precioPersonalizado.{{ $servicio->id }}"
                         type="text"
                         class="w-full rounded-lg border-gray-300 text-sm focus:border-amber-500 focus:ring-amber-500 pr-10"
                         placeholder="{{$servicio->pivot->precio_personalizado}}" />
@@ -115,17 +119,21 @@
             <div class="md:col-span-3 md:text-right">
                 
                 <button
+                wire:click="guardarPrecio({{ $servicio->id }})"
                     type="button"
-                    class="w-full md:w-auto px-3 py-2 rounded-lg bg-amber-500 text-white text-xs font-semibold hover:bg-amber-600">
+                    class="w-full md:w-auto px-3 py-2 rounded-lg bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600">
                     Guardar
                 </button>
-                <button
+                <button 
+                wire:click="quitarServicio({{ $servicio->id }})"
                     type="button"
                     class="w-full md:w-auto px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700">
+                    
                     Borrar
                 </button>
             </div>
         </div>
         @endforeach
     </div>
+    {{ $serviciosAsignados->links() }}
 </div>

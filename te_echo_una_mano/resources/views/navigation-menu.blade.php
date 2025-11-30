@@ -5,38 +5,46 @@
 
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/dashboard') }}" class="flex items-center">
-                        <img
-                            src="{{ asset('storage/images/logo2.png') }}"
-                            alt="Te echo una mano"
-                            class="mr-6 mt-1 py-1 rounded-xl"
-                            style="height: 55px; width: 50px;">
-                    </a>
-                </div>
+               <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 cursor-pointer">
+    <img
+        src="{{ asset('storage/images/logo2.png') }}"
+        alt="Te echo una mano"
+        class="mt-1 py-1 rounded-xl"
+        style="height: 55px; width: 50px;">
+    
+    <span class="text-white font-serif italic text-xl">
+        TE ECHO UNA MANO
+    </span>
+</a>
+
+
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px flex sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+
+                    <x-nav-link class="font-serif italic" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
+                        <i class="fa-solid fa-user"></i>
                         {{ __('Usuarios') }}
                     </x-nav-link>
 
                     @if (Auth::user() && (Auth::user()->isProfesional() || Auth::user()->isAdmin()))
-                    <x-nav-link href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
+                    <x-nav-link class="font-serif italic" href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
+                        <i class="fa-solid fa-wrench"></i>
                         {{ __('Profesionales') }}
                     </x-nav-link>
                     @endif
 
                     @if (Auth::user() && Auth::user()->isAdmin())
                     <x-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
+                        <i class="fa-solid fa-gear"></i>
                         {{ __('Panel Admin') }}
                     </x-nav-link>
                     @endif
 
                 </div>
-                
+
             </div>
-            
+
 
             @auth
             <!-- Contenedor derecho: ml-auto para pegarlo a la derecha -->
@@ -144,7 +152,7 @@
                 </div>
             </div>
             @endauth
-            
+
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -159,7 +167,7 @@
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                
+
             </div>
 
         </div>

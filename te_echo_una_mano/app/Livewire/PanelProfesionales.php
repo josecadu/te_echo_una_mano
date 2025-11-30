@@ -4,11 +4,16 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+
+
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+#[Layout('layouts.app')]
 class PanelProfesionales extends Component
 {
     use WithFileUploads;
@@ -76,6 +81,7 @@ class PanelProfesionales extends Component
         session()->flash('success', 'Perfil actualizado correctamente.');
         $this->dispatch('profesional-updated');
     }
+    
     public function render()
     {
         $perfilPro = User::with('profesional')->findOrFail(Auth::id());

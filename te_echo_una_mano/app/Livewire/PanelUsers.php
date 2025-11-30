@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Profesional;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
 class PanelUsers extends Component
 {
 
