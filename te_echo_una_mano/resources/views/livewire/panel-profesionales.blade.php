@@ -63,7 +63,7 @@
                     </aside>
 
                     {{-- MODAL EDITAR PERFIL --}}
-                    <x-dialog-modal wire:model="editarModal">
+                    <x-dialog-modal wire:model="editarModal" maxWidth="xs">
                         <x-slot name="title">
                             Editar perfil profesional
                         </x-slot>

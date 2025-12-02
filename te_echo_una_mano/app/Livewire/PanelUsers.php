@@ -10,6 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class PanelUsers extends Component
 {
+    
 
     public bool $profesionalModal=false;
 
@@ -18,6 +19,7 @@ class PanelUsers extends Component
     {
         $this->profesionalModal = true;
     }
+    
 
     public function abrirLogin(){
         $this->dispatch('abrirModalLogin')->to(MostrarProfesionales::class);

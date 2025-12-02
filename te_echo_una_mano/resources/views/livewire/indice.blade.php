@@ -53,13 +53,13 @@
     @endif
 
     {{-- MODALES --}}
-    <x-dialog-modal wire:model="loginModal">
+    <x-dialog-modal wire:model="loginModal" maxWidth="sm">
         <x-slot name="title">Iniciar sesión</x-slot>
         <x-slot name="content"><x-mios.login/></x-slot>
         <x-slot name="footer"></x-slot>
     </x-dialog-modal>
 
-    <x-dialog-modal wire:model="registerModal">
+    <x-dialog-modal wire:model="registerModal" maxWidth="md">
         <x-slot name="title"></x-slot>
         <x-slot name="content"><livewire:registrar-user/></x-slot>
         <x-slot name="footer"></x-slot>

@@ -31,11 +31,8 @@
         {{-- Card valoración --}}
         <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <div class="flex items-center justify-between">
-                <div>
-                    <p class="font-semibold text-gray-900">Usuario Ejemplo 1</p>
-                    <p class="text-xs text-gray-500">hace 2 días</p>
-                </div>
-                 <div class="rating">
+                
+                <div class="rating">
                     <input type="radio" name="rating" id="star5" value="5" />
                     <label for="star5">★</label>
 

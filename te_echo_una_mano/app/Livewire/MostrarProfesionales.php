@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Profesional;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -38,7 +39,7 @@ class MostrarProfesionales extends Component
     public function render()
 {
     // 1) Sacamos un paginator normal
-    $profesionales = Profesional::with('user')
+    $profesionales = Profesional::with('user')->where('user_id','!=',Auth::user()->id)
         ->orderBy('id', 'desc')
         ->paginate(4);
 

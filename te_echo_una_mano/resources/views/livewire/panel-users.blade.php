@@ -115,6 +115,7 @@
                     </div>
                 </div>
 
+                <livewire:valorar-profesional/>
             </div>
         </div>
     </div>

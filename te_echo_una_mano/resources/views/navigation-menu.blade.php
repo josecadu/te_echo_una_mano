@@ -12,8 +12,8 @@
         class="mt-1 py-1 rounded-xl"
         style="height: 55px; width: 50px;">
     
-    <span class="text-white font-serif italic text-xl">
-        TE ECHO UNA MANO
+    <span class="text-white font-serif italic font-bold text-xl">
+        Te Echo Una Mano
     </span>
 </a>
 
@@ -22,15 +22,15 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px flex sm:ms-10 sm:flex">
 
-                    <x-nav-link class="font-serif italic" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
-                        <i class="fa-solid fa-user"></i>
-                        {{ __('Usuarios') }}
+                    <x-nav-link class="font-sans font-bold" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
+                        <i class="fa-solid fa-wrench"></i>
+                        {{ __('Profesionales') }}
                     </x-nav-link>
 
                     @if (Auth::user() && (Auth::user()->isProfesional() || Auth::user()->isAdmin()))
-                    <x-nav-link class="font-serif italic" href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
-                        <i class="fa-solid fa-wrench"></i>
-                        {{ __('Profesionales') }}
+                    <x-nav-link class="font-sans font-bold " href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
+                        <i class="fa-solid fa-user"></i>
+                        {{ __('Perfil') }}
                     </x-nav-link>
                     @endif
 
