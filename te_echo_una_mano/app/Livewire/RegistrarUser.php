@@ -40,6 +40,7 @@ class RegistrarUser extends Component
         ]);
         Auth::login($user);
         return redirect()->route('dashboard');
+        $this->dispatch('alert', type: 'succes', message: 'Usuario registrado correctamente', check: false);
     }
     
         

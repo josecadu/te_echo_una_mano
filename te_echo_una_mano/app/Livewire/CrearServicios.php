@@ -46,7 +46,8 @@ class CrearServicios extends Component
             'familia_Profesional' => $familia_profesional,
         ]);
         $servicio->profesionales()->syncWithoutDetaching([$profesional->id => ['precio_personalizado' => $this->precio_personalizado]]);
-        $this->dispatch('servicioCreado');
+         $this->dispatch('alert', type: 'succes', message: 'Servicio creado correctamente', check:false);
+        
 
         // Lógica para crear el servicio   
 

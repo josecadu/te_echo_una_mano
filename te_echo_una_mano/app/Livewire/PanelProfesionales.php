@@ -78,8 +78,9 @@ class PanelProfesionales extends Component
         $user->profesional->save();
         $user->save();
         $this->reset();
-        session()->flash('success', 'Perfil actualizado correctamente.');
-        $this->dispatch('profesional-updated');
+        $this->dispatch('alert', type: 'succes', message: 'Perfil actualizado correctamente.', check:false);
+
+        //$this->dispatch('profesional-updated');
     }
     
     public function render()

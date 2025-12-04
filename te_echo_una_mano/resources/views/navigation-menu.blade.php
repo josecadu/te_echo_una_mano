@@ -1,21 +1,29 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 z-[999]">
+    <button wire:click="$dispatch('onHuevoC')"
+        class="absolute bg-orange-300 rounded rounded-3xl right-7 top-8 -translate-y-1/2 w-4 h-2 bg-red-500">
+    </button>
     <!-- Primary Navigation Menu -->
     <div class="w-full px-4 sm:px-6 lg:px-8" style="background-color: #f1af22ff;">
         <div class="flex justify-between h-16">
 
             <div class="flex">
                 <!-- Logo -->
-               <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 cursor-pointer">
-    <img
-        src="{{ asset('storage/images/logo2.png') }}"
-        alt="Te echo una mano"
-        class="mt-1 py-1 rounded-xl"
-        style="height: 55px; width: 50px;">
-    
-    <span class="text-white font-serif italic font-bold text-xl">
-        Te Echo Una Mano
-    </span>
-</a>
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 cursor-pointer">
+                    <img
+                        src="{{ asset('storage/images/logo2.png') }}"
+                        alt="Te echo una mano"
+                        class="mt-1 py-1 rounded-xl"
+                        style="height: 55px; width: 50px;">
+
+                    <span class="relative text-white font-serif italic font-bold text-xl">
+
+                        {{-- ZONA DE PRUEBA (visible temporalmente) --}}
+
+
+                        Te Echo Una Mano
+                    </span>
+
+                </a>
 
 
 
@@ -46,9 +54,13 @@
             </div>
 
 
+
             @auth
             <!-- Contenedor derecho: ml-auto para pegarlo a la derecha -->
             <div class="hidden sm:flex sm:items-center ml-auto">
+
+              
+
 
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -176,10 +188,23 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}"
-                :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link class="font-sans font-bold" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
+                <i class="fa-solid fa-wrench"></i>
+                {{ __('Profesionales') }}
             </x-responsive-nav-link>
+            @if (Auth::user() && (Auth::user()->isProfesional() || Auth::user()->isAdmin()))
+            <x-responsive-nav-link class="font-sans font-bold " href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
+                <i class="fa-solid fa-user"></i>
+                {{ __('Perfil') }}
+            </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user() && Auth::user()->isAdmin())
+            <x-responsive-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
+                <i class="fa-solid fa-gear"></i>
+                {{ __('Panel Admin') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         @auth

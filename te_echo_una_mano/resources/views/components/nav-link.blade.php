@@ -3,7 +3,7 @@
 @php
 $baseClasses = 'relative inline-flex items-center gap-2 px-5 py-2.5 
                  tracking-wide transition-all duration-200 select-none
-                text-[25px]';
+                text-[22px]';
 
 $classes = ($active ?? false)
     ? "$baseClasses bg-white/80 text-gray-900 shadow-md"

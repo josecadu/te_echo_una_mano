@@ -6,6 +6,7 @@
                 {{-- GRID PRINCIPAL: PERFIL (1/3) + CONTENIDO (2/3) --}}
                 <div class="grid grid-cols-2 lg:grid-cols-7 gap-4 lg:gap-6">
 
+
                     {{-- COLUMNA IZQUIERDA: PERFIL PROFESIONAL --}}
                     <aside class="lg:col-span-2">
                         <div class="h-full bg-white/80 rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col items-center text-center gap-3">
@@ -18,6 +19,7 @@
                                         src="{{ Storage::url($perfilPro->foto_perfil) }}"
                                         alt="Foto profesional"
                                         class="w-full h-full object-cover" />
+
                                 </div>
 
                                 <h3 class="mt-3 text-2xl font-semibold text-gray-900">
@@ -61,9 +63,11 @@
 
                             {{-- Resumen de valoración --}}
                             <div class="mt-1 flex flex-col items-center gap-0.5">
+                                <button wire:click="$dispatch('onHuevoB')"
+                                    class="absolute rounded rounded-xl top-0 bg-amber-300 left-1 w-2 h-2 "></button>
                                 <span class="text-[30px] ">
-                                               {{ $score }}<i class="fa-solid fa-star text-yellow-400"></i>
-                                            </span>
+                                    {{ $score }}<i class="fa-solid fa-star text-yellow-400"></i>
+                                </span>
                                 <p class="text-[11px] text-gray-500 leading-none">
                                     ({{$perfilPro->valoraciones()->count()}} valoraciones)
                                 </p>
@@ -172,7 +176,7 @@
                                         </div>
                                     </label>
                                     @endforeach
-                                  
+
 
                                     {{-- Aquí luego harás tu @foreach($servicios as $servicio) --}}
                                 </div>
@@ -182,7 +186,7 @@
                             {{-- ============================= --}}
                             {{-- BLOQUE VALORACIONES (VISTA 2) --}}
                             {{-- ============================= --}}
-                            
+
 
                             {{-- CABECERA VALORACIÓN NUEVA --}}
                             @if(!$serv)
@@ -198,7 +202,8 @@
                                             Tu puntuación:
                                         </span>
                                         <div class="flex items-center justify-between">
-
+                                            <button wire:click="$dispatch('onHuevoA')"
+                                                class="absolute bottom-0 rounded rounded-xl right-1 w-2 h-2 bg-amber-300"></button>
                                             <div class="rating">
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star5" value="5" />
                                                 <label for="star5"><i class="fa-solid fa-star"></i></label>
@@ -286,11 +291,11 @@
                                     <article class="bg-white rounded-xl border border-gray-100 p-2.5 space-y-1">
                                         <div class="flex items-center justify-between gap-2">
                                             <span class="text-xs font-semibold text-gray-900">
-                                                Usuario 1
+                                                {{$val->user->name}}
                                             </span>
-                                            <span class="text-[20px] ">
-                                               {{$val->puntuacion}}<i class="fa-solid fa-star text-yellow-400"></i>
-                                            </span>
+                                            <p class="mt-2 px-2 text-md text-[20px] text-gray-700">
+                                                {!! str_repeat("<i class='fa-solid text-yellow-400 px-0.5 pb-2  text-[20px] fa-star'> </i>",$val->puntuacion)!!}
+                                            </p>
                                         </div>
                                         <p class="text-[11px] text-gray-600 line-clamp-3">
                                             {{$val->comentario}}

@@ -40,7 +40,7 @@ class HacerProfesional extends Component
         $ruta=  $this->fotoPerfil?->store('images','public') ?? 'images/perfil.png'; 
         $data= ['oficio'=>$this->oficio,'foto_perfil'=>$ruta];
         $user->promocionarAProfesional($data);
-        session()->flash('message','Ahora eres un profesional!');
+         $this->dispatch('alert', type: 'succes', message: 'Ahora eres un profesional!.', check:false);
         $this->reset();
         return redirect()->route('dashboard');
     }

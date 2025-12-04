@@ -16,21 +16,26 @@
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          crossorigin="" />
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin="" />
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            crossorigin=""></script>
+        crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Livewire styles -->
     @livewireStyles
+    
+
+
+
 </head>
 
 <body class="font-sans antialiased min-h-screen bg-cover bg-center bg-no-repeat"
-      style="background-image: url('{{ asset('storage/images/logo3.png') }}');">
+    style="background-image: url('{{ asset('storage/images/logo3.png') }}');">
 
     <x-banner />
 
@@ -38,9 +43,9 @@
         @livewire('navigation-menu')
 
         @if (isset($header))
-            <header class="bg-white shadow">
-                {{-- cabecera opcional --}}
-            </header>
+        <header class="bg-white shadow">
+            {{-- cabecera opcional --}}
+        </header>
         @endif
 
         <!-- Page Content -->
@@ -48,6 +53,7 @@
             {{ $slot }}
         </main>
     </div>
+    <livewire:easter/>
 
     {{-- Modales de Jetstream/Livewire --}}
     @stack('modals')
@@ -57,6 +63,27 @@
 
     {{-- Scripts que hace @push('scripts') desde las vistas --}}
     @stack('scripts')
+    <script>
+        document.addEventListener('livewire:init', () => {
+
+            Livewire.on('alert', ({
+                type = 'success',
+                message = 'OK',
+                check =  true,
+            }) => {
+                Swal.fire({
+                    position: 'center',
+                    icon: type,
+                    title: message,
+                    showConfirmButton:  check,
+                    timer: 1800,
+                    toast: true,
+                    timerProgressBar: false,
+                });
+            });
+
+        });
+    </script>
 </body>
 
 </html>
