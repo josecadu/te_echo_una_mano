@@ -73,8 +73,8 @@ class PerfilProfesional extends Component
 
         $profesional = Profesional::where('id', $this->id)->first();
         if (!empty($this->mensajeCorreo) && !empty($this->servSeleccionados)) {
-            //Mail::to($profesional->user->email)
-            Mail::to('jm.cabrera@hotmail.es')
+            Mail::to($profesional->user->email)
+           // Mail::to('jm.cabrera@hotmail.es')
                 ->send(new NotificacionServicios(
                     'el usuario ' . Auth::user()->name . ' con el mail ' . Auth::user()->email . ' ha solicitado los siguientes servicios ' . $serviciosSolicitados,
                     ' Con el siguiente mensaje: ' .
