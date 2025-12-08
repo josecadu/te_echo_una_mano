@@ -42,7 +42,7 @@ class HacerProfesional extends Component
         $user->promocionarAProfesional($data);
          $this->dispatch('alert', type: 'succes', message: 'Ahora eres un profesional!.', check:false);
         $this->reset();
-        return redirect()->route('dashboard');
+        return redirect()->route('profesionales');
     }
 
     public function render()

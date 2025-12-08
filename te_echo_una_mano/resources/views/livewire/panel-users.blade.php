@@ -100,6 +100,12 @@
                                 document.addEventListener('DOMContentLoaded', initMapaProfesionales);
                                 document.addEventListener('livewire:navigated', initMapaProfesionales);
                             </script>
+                            @if (Auth::user() && !Auth::user()->isProfesional() && !Auth::user()->isAdmin())
+
+                            <div class=" flex justify-center mt-8">
+                                <x-button class="my-2" @click="$dispatch('open-profesional-modal')"> SOY PROFESIONAL </x-button>
+                            </div>
+                            @endif
                         </div>
 
                         <x-dialog-modal wire:model="profesionalModal">
@@ -115,7 +121,7 @@
                     </div>
                 </div>
 
-                <livewire:valorar-profesional/>
+                <livewire:valorar-profesional />
             </div>
         </div>
     </div>

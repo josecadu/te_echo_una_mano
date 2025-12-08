@@ -52,6 +52,7 @@
         <main>
             {{ $slot }}
         </main>
+        
     </div>
     <livewire:easter/>
 

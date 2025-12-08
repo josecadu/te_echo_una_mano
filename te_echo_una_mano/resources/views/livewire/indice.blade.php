@@ -38,11 +38,11 @@
 
                 {{-- Separador + invitado --}}
                 <div class="text-gray-800 text-sm text-center">
-                    <span class="block mb-1 mt-1">o</span>
+                    <span class="block">o</span>
 
                     <a
                         href="{{ url('/dashboard') }}"
-                        class="px-6 py-2 text-cyan-800 font-medium rounded-full hover:bg-white/20 transition">
+                        class="px-6 text-cyan-800 font-medium rounded-full hover:bg-white/20 transition">
                         Unirse como invitado
                     </a>
                 </div>

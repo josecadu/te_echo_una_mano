@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 z-[999]">
     <button wire:click="$dispatch('onHuevoC')"
-        class="absolute bg-orange-300 rounded rounded-3xl right-7 top-8 -translate-y-1/2 w-4 h-2 bg-red-500">
+        class="absolute bg-yellow-500 rounded rounded-3xl right-7 top-8 -translate-y-1/2 w-4 h-2 bg-red-500">
     </button>
     <!-- Primary Navigation Menu -->
     <div class="w-full px-4 sm:px-6 lg:px-8" style="background-color: #f1af22ff;">
@@ -15,13 +15,12 @@
                         class="mt-1 py-1 rounded-xl"
                         style="height: 55px; width: 50px;">
 
-                    <span class="relative text-white font-serif italic font-bold text-xl">
+                    <span class="relative text-sm sm:text-md text-white font-serif italic font-bold ">
 
                         {{-- ZONA DE PRUEBA (visible temporalmente) --}}
 
 
-                        Te Echo Una Mano
-                    </span>
+                        Te Echo Una Mano                    </span>
 
                 </a>
 
@@ -30,12 +29,12 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px flex sm:ms-10 sm:flex">
 
-                    <x-nav-link class="font-sans font-bold" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
+                    <x-nav-link class="text-md lg:text-2xl font-sans font-bold" href="{{ route('usuarios') }}" :active="request()->routeIs('usuarios')">
                         <i class="fa-solid fa-wrench"></i>
                         {{ __('Profesionales') }}
                     </x-nav-link>
 
-                    @if (Auth::user() && (Auth::user()->isProfesional() || Auth::user()->isAdmin()))
+                    @if (Auth::user() && (Auth::user()->isProfesional()))
                     <x-nav-link class="font-sans font-bold " href="{{ route('profesionales') }}" :active="request()->routeIs('profesionales')">
                         <i class="fa-solid fa-user"></i>
                         {{ __('Perfil') }}
@@ -112,12 +111,7 @@
                     </x-dropdown>
                 </div>
                 @endif
-                @if (Auth::user() && !Auth::user()->isProfesional() && !Auth::user()->isAdmin())
-
-                <div class=" flex justify-end">
-                    <x-button class="my-2" @click="$dispatch('open-profesional-modal')"> SOY PROFESIONAL </x-button>
-                </div>
-                @endif
+                
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">

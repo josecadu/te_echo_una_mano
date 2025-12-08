@@ -27,7 +27,7 @@
             @endif
         </button>
     </div>
-    <x-dialog-modal wire:model='addServiceModal'>
+    <x-dialog-modal maxWidth="sm" wire:model='addServiceModal'>
         <x-slot name='title'></x-slot>
         <x-slot name='content'>
             <form wire:submit.prevent="addService" class="space-y-3">

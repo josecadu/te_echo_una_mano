@@ -1,4 +1,4 @@
-<x-dialog-modal wire:model="modalServicio">
+<x-dialog-modal maxWidth="sm" wire:model="modalServicio">
     <x-slot name="title">
         Crear nuevo servicio
 

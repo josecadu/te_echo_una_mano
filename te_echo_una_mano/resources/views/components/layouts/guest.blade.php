@@ -17,7 +17,8 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="bg-amber-300">
+    <body class="bg-amber-300" style="background-image: url('{{ asset('storage/images/logo3.png') }}');">
+        
         <div class="font-sans text-gray-900 antialiased">
             {{ $slot }}
         </div>

@@ -12,72 +12,85 @@ use Livewire\WithPagination;
 class MostrarProfesionales extends Component
 {
     use WithPagination;
+
     public bool $loginModal = false;
     public bool $registerModal = false;
-    public $ubicacion = null;   // ['lat' => ..., 'lng' => ...]
-    public $direccion = '';     // lo que escribe el invitado
+
+    // Ubicación invitado / usuario (lat, lng) a partir de la dirección
+    public ?array $ubicacion = null;
+    public string $direccion = '';
+
+    // Filtro por tipo de profesional (oficio)
+    public ?string $tipo = null;
 
     #[On('abrirModalLogin')]
-    public function abrirModalLogin()
+    public function abrirModalLogin(): void
     {
         $this->loginModal = true;
     }
 
     #[On('abrirModalRegistro')]
-    public function abrirModalRegistro()
+    public function abrirModalRegistro(): void
     {
         $this->registerModal = true;
     }
-    public function updatedDireccion()
+
+    public function updatedDireccion(): void
     {
-        // Solo geocodificar si hay algo escrito
         $this->ubicacion = $this->direccion
             ? User::localizar($this->direccion)
             : null;
+
+        // Al cambiar dirección, volvemos a la primera página
+        $this->resetPage();
+    }
+
+    public function updatedTipo(): void
+    {
+        // Al cambiar filtro de tipo, también volvemos a página 1
+        $this->resetPage();
     }
 
     public function render()
-{
-    // 1) Sacamos un paginator normal
-    $profesionales = Profesional::with('user')->where('user_id','!=',Auth::user()->id)
-        ->orderBy('id', 'desc')
-        ->paginate(4);
+    {
+        $userId = Auth::id();
 
-    $ubicacion = $this->ubicacion;
+        $query = Profesional::with('user')
+            // Excluir al usuario logueado si existe
+            ->when($userId, fn ($q) => $q->where('user_id', '!=', $userId))
+            // Filtro por oficio (tipo)
+            ->when($this->tipo, fn ($q, $tipo) => $q->where('oficio', $tipo));
 
-    // 2) Ordenar SOLO la collection interna, sin convertir a Collection el paginator
-    $collection = $profesionales->getCollection();
+        // Ordenar por distancia si tenemos lat/lng de la ubicación
+        if (
+            is_array($this->ubicacion) &&
+            isset($this->ubicacion['lat'], $this->ubicacion['lng']) &&
+            $this->ubicacion['lat'] !== null &&
+            $this->ubicacion['lng'] !== null
+        ) {
+            $lat = $this->ubicacion['lat'];
+            $lng = $this->ubicacion['lng'];
 
-    if (
-        is_array($this->ubicacion) &&
-        isset($this->ubicacion['lat'], $this->ubicacion['lng'])
-    ) {
-        $lat = $this->ubicacion['lat'];
-        $lng = $this->ubicacion['lng'];
+            // Aproximación de distancia (suficiente para ordenar)
+            $query->orderByRaw(
+                '( (lat - ?) * (lat - ?) + (lng - ?) * (lng - ?) ) ASC',
+                [$lat, $lat, $lng, $lng]
+            );
+        } else {
+            // Sin ubicación: ordenar por más recientes
+            $query->orderByDesc('id');
+        }
 
-        $collection = $collection
-            ->sortBy(function ($p) use ($lat, $lng) {
-                if (!$p->user || $p->user->lat === null || $p->user->lng === null) {
-                    return PHP_INT_MAX; // al final de la lista
-                }
+        $profesionales = $query->paginate(4);
+        $ubicacion = $this->ubicacion;
 
-                $dLat = $p->user->lat - $lat;
-                $dLng = $p->user->lng - $lng;
+        // Oficios disponibles según el mapa del modelo Profesional
+        $tipos = Profesional::oficiosProfesionales();
 
-                return $dLat * $dLat + $dLng * $dLng;
-            })
-            ->values();
-    } else {
-        $collection = $collection
-            ->sortByDesc('id')
-            ->values();
+        return view('livewire.mostrar-profesionales', compact(
+            'profesionales',
+            'ubicacion',
+            'tipos'
+        ));
     }
-    ;
-    // 3) Volvemos a meter la collection ordenada en el paginator
-    $profesionales->setCollection($collection);
-    
-
-    return view('livewire.mostrar-profesionales', compact('profesionales', 'ubicacion'));
-}
-
 }

@@ -35,6 +35,9 @@ class Profesional extends Model
     $map = self::mapaOficiosFamilias();
     return $map [$this->oficio] ?? 'Otros Servicios';
 }
+    public static function oficiosProfesionales(){
+        return array_keys(array_unique(self::mapaOficiosFamilias()));
+    }
     public static function familiasProfesionales(){
         return array_values(array_unique(self::mapaOficiosFamilias()));
     }

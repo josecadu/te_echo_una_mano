@@ -206,19 +206,19 @@
                                                 class="absolute bottom-0 rounded rounded-xl right-1 w-2 h-2 bg-amber-300"></button>
                                             <div class="rating">
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star5" value="5" />
-                                                <label for="star5"><i class="fa-solid fa-star"></i></label>
+                                                <label for="star5"><i class="text-sm sm:text-2xl fa-solid fa-star"></i></label>
 
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star4" value="4" />
-                                                <label for="star4"><i class="fa-solid fa-star"></i></label>
+                                                <label for="star4"><i class="text-sm sm:text-2xl fa-solid fa-star"></i></label>
 
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star3" value="3" />
-                                                <label for="star3"><i class="fa-solid fa-star"></i></label>
+                                                <label for="star3"><i class="text-sm sm:text-2xl fa-solid fa-star"></i></label>
 
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star2" value="2" />
-                                                <label for="star2"><i class="fa-solid fa-star"></i></label>
+                                                <label for="star2"><i class="text-sm sm:text-2xl fa-solid fa-star"></i></label>
 
                                                 <input wire:model="valoracion" type="radio" name="rating" id="star1" value="1" />
-                                                <label for="star1"><i class="fa-solid fa-star"></i></label>
+                                                <label for="star1"><i class="text-sm sm:text-2xl fa-solid fa-star"></i></label>
                                             </div>
 
                                             <!-- estilos para estrellas de valoracion  -->
@@ -261,7 +261,7 @@
                                     <button
                                         type="button" wire:click="enviarValoracion"
                                         class="inline-flex items-center justify-center px-3 py-1.5 rounded-xl
-                                               bg-amber-500 text-white text-xs font-semibold hover:bg-amber-600 transition">
+                                               bg-amber-500 text-white text-xs  font-semibold hover:bg-amber-600 transition">
                                         Enviar valoración
                                     </button>
                                 </div>
@@ -294,7 +294,7 @@
                                                 {{$val->user->name}}
                                             </span>
                                             <p class="mt-2 px-2 text-md text-[20px] text-gray-700">
-                                                {!! str_repeat("<i class='fa-solid text-yellow-400 px-0.5 pb-2  text-[20px] fa-star'> </i>",$val->puntuacion)!!}
+                                                {!! str_repeat("<i class=' text-sm sm:text-2xl fa-solid text-yellow-400 px-0.5 pb-2  text-[20px] fa-star'> </i>",$val->puntuacion)!!}
                                             </p>
                                         </div>
                                         <p class="text-[11px] text-gray-600 line-clamp-3">
