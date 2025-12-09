@@ -85,6 +85,52 @@
 
         });
     </script>
+
+<!-- Banner de Cookies -->
+<div id="cookie-banner" 
+     class="fixed bottom-0 inset-x-0 bg-gray-900 text-white text-sm p-4 
+            flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 z-50
+            shadow-lg transform translate-y-full transition-all duration-500">
+
+    <p class="sm:max-w-xl">
+        Utilizamos cookies propias para mejorar tu experiencia en la plataforma. 
+        Al continuar navegando aceptas su uso.
+    </p>
+
+    <button id="cookie-accept"
+        class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 font-semibold text-sm transition">
+        Aceptar cookies
+    </button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.getElementById("cookie-banner");
+        const btn = document.getElementById("cookie-accept");
+
+        // Si NO está aceptado en localStorage → mostramos el banner
+        if (!localStorage.getItem("cookies_aceptadas")) {
+            setTimeout(() => {
+                banner.classList.remove("translate-y-full");
+            }, 200);
+        }
+
+        // Al hacer clic en aceptar
+        btn.addEventListener("click", function () {
+            // Guardamos en localStorage que ya se aceptó
+            localStorage.setItem("cookies_aceptadas", "1");
+
+            // Animación de salida
+            banner.classList.add("translate-y-full");
+
+            // Opcional: quitar del DOM tras la animación
+            setTimeout(() => {
+                banner.style.display = "none";
+            }, 600);
+        });
+    });
+</script>
+
 </body>
 
 </html>
